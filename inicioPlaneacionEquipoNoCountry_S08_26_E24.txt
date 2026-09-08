@@ -21,3 +21,8 @@ Todos los días a las 9 am hora Colombia y 8 am hora México.
 
 Sprint demo meet
 Jueves a las 11:30 hora Colombia y 10:30 hora México
+
+Día 1 (Lunes)
+- Sprint planning meet
+- Daily meet
+            Datasets a evaluar Microsoft Azure Predictive Maintenance y AI4I 2020
