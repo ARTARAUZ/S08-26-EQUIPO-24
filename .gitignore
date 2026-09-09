@@ -89,7 +89,6 @@ Icon$
 desktop.ini
 
 # Datasets (large / sensitive)
-data/raw/*.csv
 data/raw/*.parquet
 data/raw/*.xlsx
 data/raw/*.json
