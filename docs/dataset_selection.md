@@ -74,41 +74,57 @@ Decisiones o clasificaciones definidas por el equipo. Ej: criticidad de una máq
 
 ## 5. Matriz de comparación de datasets
 
-| Criterio | Peso | Dataset A | Dataset B | Dataset C |
-|---|---|---|---|---|
-| Alineación con NoCountry | Alto | | | |
-| Realismo industrial | Alto | | | |
-| Múltiples máquinas | Alto | | | |
-| Identificador de máquina | Alto | | | |
-| Sensores | Alto | | | |
-| Variables físicas interpretables | Medio | | | |
-| Temporalidad | Alto | | | |
-| Historial de fallas | Alto | | | |
-| Cantidad de fallas | Medio | | | |
-| Modos de falla | Bajo | | | |
-| Historial de mantenimiento | Medio | | | |
-| Variables derivadas posibles | Alto | | | |
-| Detección de deterioro | Alto | | | |
-| Explicabilidad | Alto | | | |
-| Criticidad | Medio | | | |
-| Priorización | Alto | | | |
-| Calidad | Alto | | | |
-| Complejidad | Medio | | | |
-| Viabilidad (4 semanas) | Alto | | | |
+| Criterio | Peso | Azure PdM | AI4I 2020 |
+|---|---|---|---|
+| Alineación con NoCountry | Alto | | |
+| Realismo industrial | Alto | | |
+| Múltiples máquinas | Alto | | |
+| Identificador de máquina | Alto | | |
+| Sensores | Alto | | |
+| Variables físicas interpretables | Medio | | |
+| Temporalidad | Alto | | |
+| Historial de fallas | Alto | | |
+| Cantidad de fallas | Medio | | |
+| Modos de falla | Bajo | | |
+| Historial de mantenimiento | Medio | | |
+| Variables derivadas posibles | Alto | | |
+| Detección de deterioro | Alto | | |
+| Explicabilidad | Alto | | |
+| Criticidad | Medio | | |
+| Priorización | Alto | | |
+| Calidad | Alto | | |
+| Complejidad | Medio | | |
+| Viabilidad (4 semanas) | Alto | | |
 
 ---
 
-## 6. Candidatos iniciales (sin selección)
+## 6. Candidatos disponibles en raw
 
-- Microsoft Azure Predictive Maintenance (dataset público)
-- AI4I 2020 Industrial Machine Failure Prediction
-- Otros que evalúe el equipo
+### Dataset A — Microsoft Azure Predictive Maintenance
+
+- **Origen:** Microsoft Azure, dataset público de mantenimiento predictivo.
+- **Archivos en `data/raw/`:**
+  - `PdM_errors.csv` — alarmas y errores por máquina.
+  - `PdM_failures.csv` — registros de fallas.
+  - `PdM_machines.csv` — información de las máquinas.
+  - `PdM_maint.csv` — historial de mantenimiento.
+  - `PdM_telemetry.csv` — datos de telemetría (temperatura, vibración, etc.).
+- **Fortalezas:** múltiples máquinas, sensores reales, historial de mantenimiento, eventos de falla, telemetría temporal.
+- **Complejidad:** dataset grande (telemetría ~80 MB), requiere feature engineering.
+
+### Dataset B — AI4I 2020 Industrial Machine Failure Prediction
+
+- **Origen:** AI4I 2020, dataset público de falla de máquinas industriales.
+- **Archivo en `data/raw/`:**
+  - `ai4i2020.csv` — 10,001 registros con sensores y variable de falla.
+- **Fortalezas:** dataset único y limpio, variable objetivo clara, fácil de explorar.
+- **Complejidad:** una sola tabla, menos historial de mantenimiento.
 
 ---
 
 ## 7. Proceso de selección
 
-1. Evaluar 2-3 datasets candidatos.
+1. Evaluar los datasets candidatos disponibles.
 2. Completar la matriz de comparación.
 3. Revisar con el equipo.
 4. Decidir dataset final.
@@ -118,4 +134,4 @@ Decisiones o clasificaciones definidas por el equipo. Ej: criticidad de una máq
 
 ## Estado actual
 
-**Pendiente de selección.** No se ha tomado decisión.
+**Datasets cargados en raw.** Evaluación en curso. No se ha tomado decisión final.

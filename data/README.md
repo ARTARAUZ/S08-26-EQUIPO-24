@@ -43,4 +43,22 @@ Datasets derivados, limpios y listos para uso.
 
 ## Estado actual
 
-Dataset no seleccionado. Las carpetas están listas para recibir datos cuando se defina.
+### data/raw/
+
+Archivos cargados (sin modificar):
+
+| Archivo | Origen | Descripción |
+|---|---|---|
+| `PdM_errors.csv` | Microsoft Azure Predictive Maintenance | Alarmas y errores por máquina |
+| `PdM_failures.csv` | Microsoft Azure Predictive Maintenance | Registros de fallas |
+| `PdM_machines.csv` | Microsoft Azure Predictive Maintenance | Información de las máquinas |
+| `PdM_maint.csv` | Microsoft Azure Predictive Maintenance | Historial de mantenimiento |
+| `PdM_telemetry.csv` | Microsoft Azure Predictive Maintenance | Telemetría (temperatura, vibración, etc.) |
+| `ai4i2020.csv` | AI4I 2020 | 10,001 registros con sensores y variable de falla |
+
+**Reglas:**
+- raw no se modifica.
+- Los datasets se evalúan para decidir cuál se usa en el MVP.
+- data/processed/ contendrá los datasets limpios y derivados.
+
+Dataset no seleccionado aún. Evaluación en curso.
