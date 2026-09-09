@@ -1,4 +1,4 @@
-﻿"""Tests basic project structure and imports."""
+"""Tests basic project structure and imports."""
 
 
 def test_project_structure_exists():
