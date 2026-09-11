@@ -1,4 +1,6 @@
 import streamlit as st
+import plotly.graph_objects as go
+import plotly.express as px
 
 from components.risk_table import render_risk_table
 from components.sensor_chart import render_sensor_chart
@@ -13,6 +15,80 @@ st.set_page_config(
     initial_sidebar_state='expanded'
 )
 
+# ── Estilos CSS personalizados (tema oscuro premium) ──
+st.markdown("""
+<style>
+    /* Importar fuente moderna */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* Fuente global */
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Header principal */
+    h1 {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700 !important;
+        letter-spacing: -0.5px;
+    }
+
+    /* KPI cards — borde según tipo */
+    div[data-testid="metric-container"] {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 12px;
+        padding: 16px 20px;
+        backdrop-filter: blur(10px);
+        transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    div[data-testid="metric-container"]:hover {
+        border-color: rgba(59, 130, 246, 0.7);
+        transform: translateY(-2px);
+    }
+
+    /* Valor del metric grande */
+    div[data-testid="metric-container"] > div:first-child {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Sidebar styling */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        border-right: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    /* Tabs activos */
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #3b82f6 !important;
+        border-bottom-color: #3b82f6 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Contenedores de sección */
+    div[data-testid="stVerticalBlock"] > div[data-testid="element-container"] {
+        border-radius: 8px;
+    }
+
+    /* Botones y elementos interactivos */
+    div[data-testid="stSelectbox"] label,
+    div[data-testid="stMultiSelect"] label {
+        font-weight: 500;
+        color: #94a3b8;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Footer personalizado oculto */
+    footer { visibility: hidden; }
+    #MainMenu { visibility: hidden; }
+</style>
+""", unsafe_allow_html=True)
+
 # ── Carga de datos de ejemplo (placeholder) ──
 df_machines, df_risk, df_telemetry, df_errors = load_mock_data()
 
@@ -20,8 +96,14 @@ df_machines, df_risk, df_telemetry, df_errors = load_mock_data()
 # BARRA LATERAL
 # ═══════════════════════════════════════════════
 with st.sidebar:
-    st.title('🔧 PredictiveMaintenance')
-    st.caption('Código: S08-26-EQUIPO-24')
+    st.markdown("""
+    <div style='text-align:center; padding: 8px 0 4px 0;'>
+        <div style='font-size: 2rem;'>🔧</div>
+        <div style='font-size: 1.1rem; font-weight: 700; color: #60a5fa; letter-spacing: -0.3px;'>PredictiveMaintenance</div>
+        <div style='font-size: 0.7rem; color: #64748b; margin-top: 2px;'>S08-26-EQUIPO-24</div>
+        <div style='margin-top: 8px; display: inline-block; background: rgba(34,197,94,0.15); border: 1px solid #22c55e; border-radius: 20px; padding: 2px 10px; font-size: 0.7rem; color: #22c55e;'>● EN VIVO</div>
+    </div>
+    """, unsafe_allow_html=True)
     st.divider()
 
     # Selector de máquina
@@ -63,8 +145,15 @@ with st.sidebar:
 # ═══════════════════════════════════════════════
 # CONTENEDOR PRINCIPAL
 # ═══════════════════════════════════════════════
-st.title('PredictiveMaintenance')
-st.caption('Fase: Discovery / MVP Dashboard')
+st.markdown("""
+<h1 style='margin-bottom: 0;'>🔧 PredictiveMaintenance</h1>
+""", unsafe_allow_html=True)
+st.markdown("""
+<p style='color: #64748b; font-size: 0.9rem; margin-top: 0; margin-bottom: 4px;'>
+    <strong style='color: #3b82f6;'>S08-26-EQUIPO-24</strong> &nbsp;|&nbsp; Fase: Discovery / MVP Dashboard &nbsp;|&nbsp;
+    <span style='color: #22c55e;'>● Sistema activo</span>
+</p>
+""", unsafe_allow_html=True)
 
 st.divider()
 
@@ -73,112 +162,216 @@ kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
 with kpi1:
     st.metric(
-        label=' Máquinas Monitoreadas',
-        value=len(df_machines)
+        label='🏭 Máquinas Monitoreadas',
+        value=len(df_machines),
+        delta=f'{len(df_machines)} activas',
+        delta_color='normal'
     )
 
 with kpi2:
     critical_count = len(df_risk[df_risk['risk_level'] == 'Crítico'])
     st.metric(
-        label=' Riesgo Crítico',
+        label='⚠️ Riesgo Crítico',
         value=critical_count,
-        delta='requiere atención',
+        delta='requiere atención inmediata',
         delta_color='inverse'
     )
 
 with kpi3:
+    next_maint = df_machines['next_maintenance'].min()
     st.metric(
-        label=' Próximo Mantenimiento',
-        value=df_machines['next_maintenance'].min()
+        label='📅 Próximo Mantenimiento',
+        value=next_maint,
+        delta='más próximo programado'
     )
 
 with kpi4:
     avg_risk = df_risk['risk_score'].mean()
+    risk_delta = 'moderado' if avg_risk < 70 else 'alto'
     st.metric(
-        label=' Riesgo Promedio',
-        value=f'{avg_risk:.0f}%'
+        label='📊 Riesgo Promedio',
+        value=f'{avg_risk:.0f}%',
+        delta=risk_delta,
+        delta_color='inverse' if avg_risk >= 70 else 'normal'
     )
 
 st.divider()
 
 # Pestañas principales — Las 3 preguntas del producto
 tab1, tab2, tab3 = st.tabs([
-    ' 1. Identificar (Riesgo)',
-    ' 2. Comprender (Señales)',
-    ' 3. Priorizar (Acción)'
+    '🎯 1. Identificar (Riesgo)',
+    '📡 2. Comprender (Señales)',
+    '🚀 3. Priorizar (Acción)'
 ])
 
 # ── Pestaña 1: Identificar ──
 with tab1:
-    st.subheader('Ranking de Riesgo')
+    st.subheader('📊 Ranking de Riesgo por Máquina')
 
     # Alerta de máquinas críticas
     critical_machines = df_risk[df_risk['risk_level'] == 'Crítico']['machine_id'].tolist()
     if critical_machines:
         st.error(
-            f' **Atención inmediata:** {len(critical_machines)} máquina(s) en nivel crítico: '
+            f'⚠️ **Atención inmediata:** {len(critical_machines)} máquina(s) en nivel CRÍTICO → '
             f'{", ".join(critical_machines)}'
         )
 
-    # Tabla interactiva de riesgo
+    # Tabla interactiva de riesgo con filtros
     render_risk_table(df_risk, selected_status, selected_criticality)
 
     st.divider()
-    st.subheader(' Distribución de Riesgo')
-    col_chart1, col_chart2 = st.columns(2)
-    with col_chart1:
-        st.bar_chart(
-            df_risk.set_index('machine_id')['risk_score']
+    st.subheader('📈 Distribución de Riesgo')
+
+    # Gráfico Plotly horizontal — ordenado por riesgo desc, colores semánticos
+    df_chart = df_risk.sort_values('risk_score', ascending=True).copy()
+    color_map = {
+        'Crítico': '#ff4b4b',
+        'Moderado': '#f97316',
+        'Estable': '#22c55e'
+    }
+    bar_colors = df_chart['risk_level'].map(color_map).tolist()
+
+    fig = go.Figure(go.Bar(
+        x=df_chart['risk_score'],
+        y=df_chart['machine_id'],
+        orientation='h',
+        marker_color=bar_colors,
+        text=[f'{v}%' for v in df_chart['risk_score']],
+        textposition='outside',
+        customdata=df_chart[['risk_level', 'criticality', 'priority']].values,
+        hovertemplate=(
+            '<b>%{y}</b><br>'
+            'Riesgo: %{x}%<br>'
+            'Nivel: %{customdata[0]}<br>'
+            'Criticidad: %{customdata[1]}<br>'
+            'Acción: %{customdata[2]}<extra></extra>'
         )
-    with col_chart2:
-        st.dataframe(
-            df_risk[['machine_id', 'risk_score', 'risk_level', 'criticality', 'priority']],
-            use_container_width=True,
-            hide_index=True
-        )
+    ))
+    fig.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(30,41,59,0.5)',
+        font=dict(family='Inter, sans-serif', color='#f1f5f9'),
+        xaxis=dict(
+            title='Índice de Riesgo (%)',
+            range=[0, 110],
+            gridcolor='rgba(100,116,139,0.2)',
+            color='#94a3b8'
+        ),
+        yaxis=dict(color='#f1f5f9'),
+        margin=dict(l=20, r=40, t=20, b=20),
+        height=280,
+        showlegend=False,
+    )
+    # Línea de umbral crítico
+    fig.add_vline(x=75, line_dash='dash', line_color='#ff4b4b',
+                  annotation_text='Umbral crítico (75%)',
+                  annotation_font_color='#ff4b4b',
+                  annotation_position='top right')
+    st.plotly_chart(fig, use_container_width=True)
 
 # ── Pestaña 2: Comprender ──
 with tab2:
-    st.subheader(f' Señales — {selected_machine}')
+    st.subheader(f'📡 Señales en Tiempo Real — {selected_machine}')
 
     # Layout de dos columnas
     col_sensors, col_detail = st.columns([2, 1])
 
     with col_sensors:
-        st.write('**Telemetría de sensores**')
+        st.markdown('**🌡️ Telemetría de sensores**')
         render_sensor_chart(df_telemetry, selected_machine)
 
     with col_detail:
-        st.write('**Histórico de errores**')
+        st.markdown('**🔴 Histórico de errores**')
         render_machine_detail(df_errors, selected_machine)
 
     st.divider()
-    st.subheader(' Señales relevantes')
-    col_s1, col_s2, col_s3 = st.columns(3)
-    with col_s1:
-        st.info('**Vibración**\n\n↑ +32% vs. baseline\n\nUmbral: 4.5 mm/s')
-    with col_s2:
-        st.warning('**Temperatura**\n\n↑ +18% vs. baseline\n\nUmbral: 72°C')
-    with col_s3:
-        st.success('**Presión**\n\n→ estable\n\n6.1 bar')
+    st.subheader('⚡ Estado de señales clave')
+
+    # Métricas dinámicas basadas en la máquina seleccionada
+    df_sel = df_telemetry[df_telemetry['machine_id'] == selected_machine]
+    if not df_sel.empty:
+        latest = df_sel.sort_values('timestamp').iloc[-1]
+        first  = df_sel.sort_values('timestamp').iloc[0]
+
+        temp_delta  = latest['temperature'] - first['temperature']
+        vib_delta   = latest['vibration']   - first['vibration']
+        pres_delta  = latest['pressure']    - first['pressure']
+
+        col_s1, col_s2, col_s3 = st.columns(3)
+        with col_s1:
+            st.metric(
+                label='🌡️ Temperatura actual',
+                value=f"{latest['temperature']:.1f} °C",
+                delta=f"{temp_delta:+.1f} °C vs inicio",
+                delta_color='inverse'
+            )
+        with col_s2:
+            st.metric(
+                label='📳 Vibración actual',
+                value=f"{latest['vibration']:.2f} mm/s",
+                delta=f"{vib_delta:+.2f} mm/s vs inicio",
+                delta_color='inverse'
+            )
+        with col_s3:
+            st.metric(
+                label='💧 Presión actual',
+                value=f"{latest['pressure']:.1f} bar",
+                delta=f"{pres_delta:+.1f} bar vs inicio"
+            )
 
 # ── Pestaña 3: Priorizar ──
 with tab3:
-    st.subheader(' Lista de Prioridad de Mantenimiento')
+    st.subheader('🚀 Cola de Intervención — Ordenada por Prioridad')
 
     st.info(
-        ' Las tareas se ordenan por combinación de **riesgo × criticidad × impacto**. '
-        'Revisar la máquina con mayor prioridad primero.'
+        '📌 Las tareas se ordenan por **riesgo × criticidad × impacto**. '
+        'Intervenir en orden descendente para maximizar disponibilidad de planta.'
     )
 
-    render_priority_list(df_risk, df_machines)
+    # Lista mejorada con progress bars de riesgo
+    df_prio = df_risk.merge(
+        df_machines[['machine_id', 'type', 'location', 'days_since_maintenance']], on='machine_id'
+    ).sort_values('priority_score', ascending=False)
 
-    st.divider()
-    st.subheader(' Recomendación de intervención')
-    top_machine = df_risk.sort_values('priority_score', ascending=False).iloc[0]
-    st.success(
-        f'**Máquina recomendada:** {top_machine["machine_id"]}\n\n'
-        f'**Acción:** Inspección programada\n\n'
-        f'**Justificación:** Riesgo {top_machine["risk_score"]}%, '
-        f'criticidad {top_machine["criticality"]}'
-    )
+    rank_icons = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣']
+    for idx, (_, row) in enumerate(df_prio.iterrows()):
+        icon = rank_icons[idx] if idx < len(rank_icons) else f'{idx+1}.'
+        level_color = {'Crítico': '#ff4b4b', 'Moderado': '#f97316', 'Estable': '#22c55e'}.get(row['risk_level'], '#64748b')
+        action_emoji = {'Intervenir': '🔴', 'Inspeccionar': '🟠', 'Monitorear': '🟡', 'Revisar': '🟡', 'Ninguna': '🟢'}.get(row['priority'], '⚪')
+
+        with st.container():
+            c1, c2, c3, c4 = st.columns([0.3, 2.5, 2, 1.5])
+            with c1:
+                st.markdown(f"<div style='font-size:1.5rem; text-align:center; padding-top:8px;'>{icon}</div>", unsafe_allow_html=True)
+            with c2:
+                st.markdown(f"**{row['machine_id']}** — {row['type']}")
+                st.caption(f"📍 {row['location']} · {row['days_since_maintenance']}d sin mantenimiento")
+                st.progress(int(row['risk_score']), text=f"Riesgo: {row['risk_score']}%")
+            with c3:
+                st.markdown(f"<span style='color:{level_color}; font-weight:600;'>● {row['risk_level']}</span> · Criticidad {row['criticality']}", unsafe_allow_html=True)
+            with c4:
+                st.markdown(f"{action_emoji} **{row['priority']}**")
+            st.divider()
+
+    # Card de recomendación principal
+    top = df_prio.iloc[0]
+    top_color = {'Crítico': '#ff4b4b', 'Moderado': '#f97316', 'Estable': '#22c55e'}.get(top['risk_level'], '#64748b')
+    st.markdown(f"""
+    <div style='
+        background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(30,41,59,0.9));
+        border: 1px solid #3b82f6;
+        border-left: 4px solid {top_color};
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-top: 8px;
+    '>
+        <div style='font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;'>🎯 RECOMENDACIÓN DE INTERVENCIÓN</div>
+        <div style='font-size: 1.3rem; font-weight: 700; color: #f1f5f9; margin-bottom: 4px;'>{top['machine_id']} — {top['type']}</div>
+        <div style='color: #94a3b8; margin-bottom: 12px;'>📍 {top['location']} · {top['days_since_maintenance']} días sin mantenimiento</div>
+        <div style='display: flex; gap: 24px; flex-wrap: wrap;'>
+            <span style='color: {top_color}; font-weight: 600;'>● Riesgo {top['risk_score']}% ({top['risk_level']})</span>
+            <span style='color: #94a3b8;'>Criticidad: {top['criticality']}</span>
+            <span style='color: #60a5fa; font-weight: 600;'>▶ Acción: {top['priority']}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
