@@ -29,7 +29,7 @@ El sistema debe permitir que un responsable de mantenimiento, sin revisar manual
 ## Alcance MVP
 
 ### MUST HAVE
-- Dataset seleccionado y justificado
+- Dataset seleccionado y justificado ✅ **Azure PdM**
 - Limpieza y tratamiento de datos
 - EDA
 - Modelo ML con baseline, predicción de riesgo y explicabilidad
@@ -58,7 +58,7 @@ Dataset → Limpieza → Feature Engineering → Modelo ML → Artefacto → Str
 
 ## Arquitectura inicial
 
-- Dataset en data/
+- Dataset en data/ (Azure PdM seleccionado)
 - Limpieza y feature engineering en src/
 - Modelo serializado en models/
 - Dashboard en dashboard/app.py (Streamlit)
@@ -102,10 +102,18 @@ dashboard/ — aplicación Streamlit
 tests/ — pruebas
 docs/ — documentación del proyecto
 .github/ — templates y workflows CI
+.streamlit/ — configuración Streamlit (theme, server)
 
 ## Estado actual
 
-El repositorio se encuentra en **fase de preparación / discovery**. No hay dataset seleccionado, modelo entrenado ni dashboard funcional.
+El repositorio se encuentra en **fase de preparación / discovery**.
+
+**Dataset seleccionado:** Microsoft Azure Predictive Maintenance (Azure PdM) ✅
+- Evaluación completada con matriz de 20 criterios ponderados.
+- Análisis automatizado en `notebooks/01_data_exploration.ipynb` (sección 10).
+- Documentación en `docs/dataset_selection.md` y `docs/decisions.md` (DEC-009).
+
+**Próximo:** Data Engineering (unir 5 tablas) → Feature Engineering temporal → Modelado.
 
 ## Roadmap de 4 semanas
 
@@ -147,18 +155,19 @@ Ver CONTRIBUTING.md.
 
 ## Limitaciones conocidas
 
-- Dataset no seleccionado.
 - Modelo no entrenado.
-- Dashboard es un skeleton.
+- Dashboard v0.2 (componentes modulares, mock data).
 - FastAPI no está incluido en el MVP.
+- Dataset AI4I 2020 solo para validación secundaria.
 
 ## Nota sobre datasets
 
-No se han subido datasets al repositorio. Los datos crudos van en data/raw/ y no se modifican.
+Dataset principal: **Azure PdM** en `data/raw/` (5 archivos). Validación secundaria: AI4I 2020.
+Los datos crudos van en data/raw/ y no se modifican.
 
 ## Principio de transparencia
 
-Creator variables derivadas es válido cuando existe justificación técnica o de negocio y el proceso es reproducible. No se deben inventar datos históricos.
+Crear variables derivadas es válido cuando existe justificación técnica o de negocio y el proceso es reproducible. No se deben inventar datos históricos.
 
 ## Demo futura
 
