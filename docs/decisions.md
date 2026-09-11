@@ -40,7 +40,7 @@ Registro de decisiones arquitectónicas y de producto.
 - **Fecha:** 2026-09-08
 - **Contexto:** Riesgo de elegir dataset inadecuado.
 - **Decisión:** Evaluar 2-3 candidatos con la matriz de `docs/dataset_selection.md`.
-- **Consecuencia:** La selección正式 delayed until evaluation completes.
+- **Consecuencia:** La selección formal delayed until evaluation completes.
 
 ---
 
@@ -84,8 +84,42 @@ Registro de decisiones arquitectónicas y de producto.
 
 ---
 
+## DEC-009
+**Dataset seleccionado: Microsoft Azure Predictive Maintenance.**
+
+- **Fecha:** 2026-09-11
+- **Contexto:** Evaluación comparativa de 2 candidatos (Azure PdM vs AI4I 2020) usando matriz de 20 criterios ponderados.
+- **Decisión:** Seleccionar Azure PdM como dataset principal para el MVP. AI4I 2020 como validación secundaria.
+- **Evidencia:** Matriz completada en `docs/dataset_selection.md`, análisis automatizado en `notebooks/01_data_exploration.ipynb` (sección 10).
+- **Consecuencia:** 
+  - Data Engineering: unir 5 tablas (telemetría, errores, fallas, máquinas, mantenimiento).
+  - Feature Engineering: rolling windows, tendencias, RUL desde `df_maint`.
+  - Modelado: time-series forecasting / classification con horizonte temporal.
+  - Dashboard: riesgo por máquina con serie temporal.
+
+---
+
+## DEC-010
+**Modelo final seleccionado.**
+
+- **Fecha:** Pendiente
+- **Contexto:** 
+- **Decisión:** 
+- **Consecuencia:** 
+
+---
+
+## DEC-011
+**Estrategia de deploy final.**
+
+- **Fecha:** Pendiente
+- **Contexto:** 
+- **Decisión:** 
+- **Consecuencia:** 
+
+---
+
 ## Próximas decisiones
 
-- DEC-009: Dataset final seleccionado.
 - DEC-010: Modelo final seleccionado.
 - DEC-011: Estrategia de deploy final.
