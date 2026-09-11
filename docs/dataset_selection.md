@@ -76,8 +76,8 @@ Decisiones o clasificaciones definidas por el equipo. Ej: criticidad de una máq
 
 | Criterio | Peso | Azure PdM | AI4I 2020 |
 |---|---|---|---|
-| Alineación con NoCountry | Alto | ⭐⭐⭐⭐⭐ Flota 100 máquinas, 1 año | ⭐⭐⭐ Sintético, 10k instancias |
-| Realismo industrial | Alto | ⭐⭐⭐⭐⭐ Telemetría + mantenimiento + fallas | ⭐⭐⭐⭐ Solo proceso mecanizado |
+| Alineación con NoCountry | Alto | ✅ Flota 100 máquinas, 1 año | ✅ Sintético, 10k instancias |
+| Realismo industrial | Alto | ✅ Telemetría + mantenimiento + fallas | ✅ Solo proceso mecanizado |
 | Múltiples máquinas | Alto | ✅ 100 IDs únicos | ❌ 1 registro por Product ID |
 | Identificador de máquina | Alto | ✅ machineID en 5 tablas | ✅ Product ID |
 | Sensores | Alto | 4 temporales (volt, rotate, pressure, vibration) | 5 estáticos (T, T, R, T, W) |

@@ -102,6 +102,7 @@ dashboard/ — aplicación Streamlit
 tests/ — pruebas
 docs/ — documentación del proyecto
 .github/ — templates y workflows CI
+.streamlit/ — configuración Streamlit (theme, server)
 
 ## Estado actual
 
