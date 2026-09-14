@@ -75,34 +75,35 @@ Dataset → Limpieza → Feature Engineering → Modelo ML → Artefacto → Str
 - Jupyter / Google Colab
 - Git, GitHub
 - Deploy: Streamlit Community Cloud
+- Stitch 
 
 ## Roles del equipo
-
-### Data Scientists (3)
+Activos ✅
+### Data Scientists (inicialmente 3)
 - Luis Fernando Tapia — Modelado, baseline, modelos, métricas
 - Oscar Arauz — Feature Engineering, transformaciones, variables temporales
-- Lennin Billey Temoche Gómez — Pipeline ML, validación, serialización, integración
+- Lennin Billey Temoche Gómez — Pipeline ML, validación, serialización, integración ✅
 
-### Data Analysts (4)
-- Lorena Urrutia — Product & Business, historias de usuario, KPIs, criticidad
+### Data Analysts (inicialmente 4)
+- Lorena Urrutia — Product & Business, historias de usuario, KPIs, criticidad ✅
 - Alexander Tovar Morcillo — Data Quality, profiling, nulos, outliers
-- Héctor García — EDA, visualización, tendencias
+- Héctor García — EDA, visualización, tendencias ✅
 - Carlos Vega — Dashboard, UX, Streamlit
 
 ### Software Engineer
-- Albeiro Burbano — Arquitectura, GitHub, integración, deploy, CI
+- Albeiro Burbano — Arquitectura, GitHub, integración, deploy, CI ✅
 
 ## Estructura del repositorio
 
-data/ — datasets (raw y processed)
-notebooks/ — exploración y análisis
-src/ — código de producción (data, features, models, utils)
-models/ — artefactos del modelo
-dashboard/ — aplicación Streamlit
-tests/ — pruebas
-docs/ — documentación del proyecto
-.github/ — templates y workflows CI
-.streamlit/ — configuración Streamlit (theme, server)
+- **`data/`** — Datasets (raw y processed)
+- **`notebooks/`** — Exploración y análisis
+- **`src/`** — Código de producción (data, features, models, utils)
+- **`models/`** — Artefactos del modelo
+- **`dashboard/`** — Aplicación Streamlit
+- **`tests/`** — Pruebas
+- **`docs/`** — Documentación del proyecto
+- **`.github/`** — Templates y workflows de CI (GitHub Actions)
+- **`.streamlit/`** — Configuración de Streamlit (theme, server)
 
 ## Estado actual
 
@@ -137,11 +138,56 @@ Ver docs/backlog.md para el backlog completo organizado por épicas.
 
 ## Cómo preparar el entorno local
 
+### Requisitos
+- Python 3.12 o superior
+- Git
+- IDE con terminal integrada (VS Code, Antigravity, etc.)
+
+### Paso 1: Clonar
 ```bash
 git clone https://github.com/No-Country-simulation/S08-26-EQUIPO-24
 cd S08-26-EQUIPO-24
-pip install -r requirements.txt
 ```
+
+### Paso 2: Crear entorno virtual
+```bash
+python -m venv .venv
+```
+
+### Paso 3: Activar
+```bash
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+# Windows CMD
+.venv\Scripts\activate.bat
+# Linux/macOS
+source .venv/bin/activate
+```
+
+### Paso 4: Instalar dependencias
+```bash
+.venv\Scripts\python.exe -m pip install --upgrade pip
+.venv\Scripts\pip.exe install pandas numpy scikit-learn joblib
+.venv\Scripts\pip.exe install matplotlib seaborn plotly
+.venv\Scripts\pip.exe install streamlit
+.venv\Scripts\pip.exe install jupyter ipykernel pytest
+```
+
+### Paso 5: Verificar
+```bash
+.venv\Scripts\python.exe -c "import pandas, streamlit, sklearn; print('OK')"
+```
+
+### Paso 6: Ejecutar
+```bash
+# Notebook
+jupyter notebook notebooks/
+
+# Dashboard
+streamlit run dashboard/app.py
+```
+
+> Ver `CONTRIBUTING.md` para pasos detallados y solución de problemas.
 
 ## Cómo ejecutar el dashboard
 
@@ -155,9 +201,9 @@ Ver CONTRIBUTING.md.
 
 ## Limitaciones conocidas
 
-- Modelo no entrenado.
-- Dashboard v0.2 (componentes modulares, mock data).
-- FastAPI no está incluido en el MVP.
+- Modelo en proceso
+- Dashboard v0.2 (componentes modulares, mock data, diseño en Stich, desarrollo en Streamlit).
+- FastAPI inicialmente no está incluido en el MVP.
 - Dataset AI4I 2020 solo para validación secundaria.
 
 ## Nota sobre datasets

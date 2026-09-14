@@ -54,14 +54,14 @@ fix/DATA-06-null-handling
 
 Usa un prefijo descriptivo:
 
-| Prefijo | Cuándo |
-|---|---|
-| `feat:` | Nueva funcionalidad |
-| `fix:` | Corrección de error |
-| `docs:` | Documentación |
+| Prefijo     | Cuándo                                              |
+| ----------- | --------------------------------------------------- |
+| `feat:`     | Nueva funcionalidad                                 |
+| `fix:`      | Corrección de error                                 |
+| `docs:`     | Documentación                                       |
 | `refactor:` | Reorganización de código sin cambiar comportamiento |
-| `test:` | Agregar o mejorar tests |
-| `chore:` | Mantenimiento del repositorio (config, deps) |
+| `test:`     | Agregar o mejorar tests                             |
+| `chore:`    | Mantenimiento del repositorio (config, deps)        |
 
 Ejemplo:
 
@@ -133,7 +133,7 @@ docs/           → documentación del proyecto
 
 ### Requisitos previos
 
-- Python 3.10 o superior
+- Python 3.12 o superior
 - Git
 - IDE: VS Code, Antigravity, o cualquier editor con terminal integrada
 
@@ -153,21 +153,24 @@ python -m venv .venv
 ### Paso 3: Activar el entorno virtual
 
 **Windows (PowerShell):**
+
 ```bash
 .venv\Scripts\Activate.ps1
 ```
 
 **Windows (CMD):**
+
 ```bash
 .venv\Scripts\activate.bat
 ```
 
 **Linux/macOS:**
+
 ```bash
 source .venv/bin/activate
 ```
 
-> **Nota:** En VS Code o Antigravity, al abrir la terminal integrada (Ctrl+`), el entorno se activa automáticamente si la carpeta `.venv` existe. Si no, ejecuta el comando de activación manual.
+> **Nota:** En VS Code o Antigravity, al abrir la terminal integrada (en antigravity`Ctrl+shift+ñ`), el entorno se activa automáticamente si la carpeta .venv existe. Si no, ejecuta el comando de activación manual `.venv\Scripts\Activate.ps1`.
 
 ### Paso 4: Instalar dependencias (comandos probados, sin errores)
 
@@ -191,9 +194,11 @@ source .venv/bin/activate
 ```
 
 > **Alternativa rápida (todo de una vez):**
+>
 > ```bash
 > .venv\Scripts\pip.exe install -r requirements.txt
 > ```
+>
 > Si esto falla por timeout, instala en lotes como se indica arriba.
 
 ### Paso 5: Verificar instalación
@@ -203,6 +208,7 @@ source .venv/bin/activate
 ```
 
 Salida esperada:
+
 ```
 OK - Todas las librerias
 pandas: 3.0.5
@@ -212,26 +218,29 @@ sklearn: 1.9.1
 
 ### Paso 6: Datasets
 
-Los datasets ya están en `data/raw/` (6 archivos CSV). El notebook los carga directamente desde GitHub raw URLs, no es necesario descargarlos de nuevo.
+Los datasets ya están en `data/raw/` (6 archivos CSV). Se cargarán directamente desde GitHub raw URLs, no es necesario descargarlos de nuevo.
 
 ```bash
 # Verificar datasets
 ls data/raw/
 ```
 
-### Paso 7: Ejecutar el notebook
+### Paso 7: Ejecutar notebooks
 
 **Opción A: VS Code / Antigravity (recomendado)**
+
 - Abre `notebooks/01_data_exploration.ipynb`
 - Haz click en "Run All" o ejecuta celda por celda (Ctrl+Enter)
 
 **Opción B: Terminal**
+
 ```bash
 jupyter notebook notebooks/
 ```
+
 Luego abre la URL que se genera en el navegador.
 
-### Paso 8: Ejecutar el dashboard (cuando esté listo)
+### Paso 8: Ejecutar el dashboard
 
 ```bash
 streamlit run dashboard/app.py
@@ -243,7 +252,7 @@ El dashboard se abre automáticamente en `http://localhost:8501`.
 
 1. Abre el IDE
 2. Abre la carpeta del proyecto (`S08-26-EQUIPO-24`)
-3. Abre la terminal integrada: `Ctrl + `` (VS Code) o `Ctrl + J` (Antigravity)
+3. Abre la terminal integrada: `Ctrl + '` (VS Code) o `Ctrl + Shift + Ñ` (Antigravity)
 4. El entorno virtual se activa automáticamente si `.venv` está en la raíz
 5. Si no se activó, ejecuta manualmente:
    - PowerShell: `.venv\Scripts\Activate.ps1`
@@ -252,22 +261,28 @@ El dashboard se abre automáticamente en `http://localhost:8501`.
 ### Flujo de contribución
 
 #### Crear una rama
+
 ```bash
 git checkout -b feature/<id>-detalle
 ```
+
 Ejemplos: `feature/ML-04-feature-engineering`, `fix/DATA-06-null-handling`, `docs/dataset-selection`
 
 #### Hacer commits
+
 ```bash
 git add .
 git commit -m "feat: add rolling mean feature for sensor data"
 ```
+
 Prefijos: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 
 #### Crear Pull Request
+
 ```bash
 git push origin feature/<id>-detalle
 ```
+
 Luego abre un PR en GitHub con al menos un revisor, describiendo los cambios y enlazando la tarea del backlog (ej: `ML-07`).
 
 ---
@@ -297,14 +312,14 @@ fix/DATA-06-null-handling
 
 Usa un prefijo descriptivo:
 
-| Prefijo | Cuándo |
-|---|---|
-| `feat:` | Nueva funcionalidad |
-| `fix:` | Corrección de error |
-| `docs:` | Documentación |
+| Prefijo     | Cuándo                                              |
+| ----------- | --------------------------------------------------- |
+| `feat:`     | Nueva funcionalidad                                 |
+| `fix:`      | Corrección de error                                 |
+| `docs:`     | Documentación                                       |
 | `refactor:` | Reorganización de código sin cambiar comportamiento |
-| `test:` | Agregar o mejorar tests |
-| `chore:` | Mantenimiento del repositorio (config, deps) |
+| `test:`     | Agregar o mejorar tests                             |
+| `chore:`    | Mantenimiento del repositorio (config, deps)        |
 
 Ejemplo:
 
