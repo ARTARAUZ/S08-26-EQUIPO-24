@@ -2,9 +2,9 @@
 
 ## Proyecto: PredictiveMaintenance — Sistema de Mantenimiento Predictivo Industrial
 
-**No Country --- S08-26 Equipo 24**\
-**Dataset:** Azure Predictive Maintenance (Azure PdM)\
-**Rol:** ML Pipeline & Integration\
+**No Country --- S08-26 Equipo 24**
+**Dataset:** Azure Predictive Maintenance (Azure PdM)
+**Rol:** ML Pipeline & Integration
 **Notebook:** `02_data_cleaning_EDA_integrado.ipynb`
 
 ## 1. Objetivo
