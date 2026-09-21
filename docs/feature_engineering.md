@@ -126,4 +126,4 @@ Sensores: `volt`, `rotate`, `pressure`, `vibration`
 
 **Nota**
 
-El archivo `features_dataset.parquet` ocupa aproximadamente 150 MB en disco (comprimido), frente a los ~113.6 MB del `master_dataset.parquet` original, reflejando la adición de 30 columnas derivadas.
+El archivo `features_dataset.parquet` ocupa aproximadamente 150 MB en disco (comprimido), frente a los ~35.6 MB del `master_dataset.parquet` original, reflejando la adición de 30 columnas derivadas.
