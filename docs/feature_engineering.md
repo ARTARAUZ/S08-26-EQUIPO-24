@@ -5,7 +5,7 @@
 Construcción de la matriz de características para Machine Learning a partir del dataset analítico unificado `master_dataset.parquet` (876,100 registros, 100 máquinas, año 2015).
 
 **Notebook asociado:** `notebooks/04_feature_engineering.ipynb`
-**Dataset resultante:** `data/processed/features_dataset.parquet`
+**Dataset resultante:** `data/processed/features_dataset_part1.parquet` + `data/processed/features_dataset_part2.parquet` (segmentado por máquinas, ~55 MB cada uno, por debajo del límite de 100 MB de GitHub)
 
 ---
 
@@ -84,6 +84,27 @@ Sensores: `volt`, `rotate`, `pressure`, `vibration`
 
 ---
 
+## Estrategia de Exportación (Segmentación por Máquinas)
+
+Para cumplir con el límite de 100 MB de GitHub, el dataset se exporta en **dos partes** usando compresión Brotli:
+
+- `features_dataset_part1.parquet`: Máquinas 1-50 (~55 MB)
+- `features_dataset_part2.parquet`: Máquinas 51-100 (~55 MB)
+
+**Reconstrucción en `05_modeling.ipynb`:**
+```python
+import pandas as pd
+base = "https://raw.githubusercontent.com/No-Country-simulation/S08-26-EQUIPO-24/main/data/processed/"
+features_df = pd.concat([
+    pd.read_parquet(base + "features_dataset_part1.parquet"),
+    pd.read_parquet(base + "features_dataset_part2.parquet")
+], ignore_index=True)
+```
+
+La reconstrucción es exacta — no se pierde ni altera ninguna celda.
+
+---
+
 ## Validaciones de Calidad
 
 | Validación | Resultado |
@@ -126,4 +147,4 @@ Sensores: `volt`, `rotate`, `pressure`, `vibration`
 
 **Nota**
 
-El archivo `features_dataset.parquet` ocupa aproximadamente 150 MB en disco (comprimido), frente a los ~35.6 MB del `master_dataset.parquet` original, reflejando la adición de 30 columnas derivadas.
+El archivo exportado segmentado ocupa aproximadamente **110 MB en total** (~55 MB por parte) en formato Parquet con compresión Brotli, frente a los ~35.6 MB del `master_dataset.parquet` original. La segmentación por máquinas mitiga el riesgo de exceder el límite de 100 MB de GitHub por archivo.
